@@ -2,6 +2,14 @@
 
 Easily create, edit and delete custom snippets.
 
+## Installation
+
+This extension is not yet ready to be published to VSCode's extension marketplace. To install it, you must download the VSIX file at the root of this directory and run the following command:
+
+```
+code --install-extension <path-to-vsix-file>
+```
+
 ## Usage
 
 ### Working with Stubs
