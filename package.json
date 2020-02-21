@@ -1,6 +1,12 @@
 {
 	"name": "custom-snippets",
+	"publisher": "ncko",
+	"author": "Nick Olsen <@ncko>",
 	"displayName": "Custom Snippets",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ncko/vscode-custom-snippets-extension.git"
+	},
 	"description": "Easily create, edit and delete custom snippets",
 	"version": "0.1.0",
 	"engines": {
