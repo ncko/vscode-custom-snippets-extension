@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import { snippetFolder, writeSnippet } from "./util";
+import { SnippetFileObject } from "./types";
 
 /**
  * Remove an existing snippet
@@ -13,16 +14,33 @@ export default async function snippetToStub() {
   quickPick.onDidHide(() => quickPick.dispose());
 
   quickPick.onDidAccept(() => {
+    let targetSnippetsText, parsedSnippets: SnippetFileObject;
     const language = quickPick.value;
     const pathToSnippets = `${snippetFolder()}${language}.json`;
 
     // open language snippet file
-    const targetSnippetsText = fs.readFileSync(pathToSnippets, {
-      encoding: "utf8"
-    });
-
     // parse snippet file as json object
-    const parsedSnippets = JSON.parse(targetSnippetsText);
+    try {
+      targetSnippetsText = fs.readFileSync(pathToSnippets, {
+        encoding: "utf8"
+      });
+
+      parsedSnippets = JSON.parse(targetSnippetsText);
+
+      // if the file exists but is empty, notify the user and return
+      if (!Object.keys(parsedSnippets).length) {
+        vscode.window.showInformationMessage(
+          `There are no snippets available in the ${language} snippets file`
+        );
+        return;
+      }
+
+    } catch (error) {
+      vscode.window.showErrorMessage(
+        `There are no snippets available for ${language}`
+      );
+      return;
+    }
 
     // provide the user with a list of snippets from the language snippet file
     const snippetPick = vscode.window.createQuickPick();
@@ -42,6 +60,11 @@ export default async function snippetToStub() {
 
       // rewrite the file
       writeSnippet(language, JSON.stringify(parsedSnippets));
+
+      // notify the user
+      vscode.window.showInformationMessage(
+        `Successfully removed ${targetSnippet.title} with prefix ${targetSnippet.prefix} from ${language} snippets file`
+      );
 
       snippetPick.dispose();
     });

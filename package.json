@@ -10,9 +10,9 @@
 		"Snippets"
 	],
 	"activationEvents": [
-		"onCommand:extension.stubFromFile",
-		"onCommand:extension.stubFromSelection",
-		"onCommand:extension.stubtoSnippet",
+		"onCommand:extension.fileToStub",
+		"onCommand:extension.selectionToStub",
+		"onCommand:extension.stubToSnippet",
 		"onCommand:extension.snippetToStub",
 		"onCommand:extension.removeSnippet"
 	],
@@ -20,24 +20,24 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.stubFromFile",
-				"title": "New Snippet Stub from File"
+				"command": "extension.fileToStub",
+				"title": "Stub File"
 			},
 			{
-				"command": "extension.stubFromSelection",
-				"title": "New Snippet Stub from Selection"
+				"command": "extension.selectionToStub",
+				"title": "Stub Selection"
 			},
 			{
 				"command": "extension.stubToSnippet",
-				"title": "Convert Stub to Snippet"
+				"title": "Write Snippet"
 			},
 			{
 				"command": "extension.snippetToStub",
-				"title": "Open Snippet as Stub"
+				"title": "Open Snippet"
 			},
 			{
 				"command": "extension.removeSnippet",
-				"title": "Remove a Snippet"
+				"title": "Remove Snippet"
 			}
 		]
 	},

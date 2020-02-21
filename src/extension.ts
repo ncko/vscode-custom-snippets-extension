@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import stubFromFile from "./stubFromFile";
-import stubFromSelection from "./stubFromSelection";
+import fileToStub from "./fileToStub";
+import selectionToStub from "./selectionToStub";
 import stubToSnippet from "./stubToSnippet";
 import snippetToStub from "./snippetToStub";
 import removeSnippet from "./removeSnippet";
@@ -12,20 +12,20 @@ export function activate(context: vscode.ExtensionContext) {
   /**
    * Stub From File
    */
-  const stubFromFileCommand = registerCommand(
-    "extension.stubFromFile",
-    stubFromFile
+  const fileToStubCommand = registerCommand(
+    "extension.fileToStub",
+    fileToStub
   );
-  subscriptions.push(stubFromFileCommand);
+  subscriptions.push(fileToStubCommand);
 
   /**
    * Stub From Selection
    */
-  const stubFromSelectionCommand = registerCommand(
-    "extension.stubFromSelection",
-    stubFromSelection
+  const selectionToStubCommand = registerCommand(
+    "extension.selectionToStub",
+    selectionToStub
   );
-  subscriptions.push(stubFromSelectionCommand);
+  subscriptions.push(selectionToStubCommand);
 
   /**
    * Stub To Snippet

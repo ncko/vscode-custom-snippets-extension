@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as os from "os";
+import { SnippetObject } from "./types";
 
 // TODO - make sure this path is correct for Mac, Linux and Windows
 export const snippetFolder = () =>
@@ -8,7 +9,7 @@ export const snippetFolder = () =>
 export const stubString = (
   title?: string,
   prefix?: string,
-  body?: string
+  body?: string | string[]
 ) => {
   const snippetBody = Array.isArray(body) ? body.join("\n") : body;
   return `Title: ${title}\nPrefix: ${prefix}\n-------------------------------------------\n${snippetBody}\n-------------------------------------------`;
@@ -45,6 +46,11 @@ export const parseSnippetStub = (snippetText?: string) => {
         }
 
         const splitAtColon = line.split(":");
+
+        if (splitAtColon.length < 2) {
+          throw new Error("Badly formatted snippet text");
+        }
+
         const key = splitAtColon[0].toLowerCase();
         const value = splitAtColon[1].trim();
 
@@ -76,9 +82,3 @@ export const parseSnippetStub = (snippetText?: string) => {
     { title: "", prefix: "", body: [] }
   );
 };
-
-interface SnippetObject {
-  body: string[];
-  prefix: string;
-  title: string;
-}

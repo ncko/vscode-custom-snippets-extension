@@ -1,28 +1,37 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import { snippetFolder, stubString } from "./util";
+import { SnippetFileObject } from "./types"
 
 /**
  * Open an existing snippet as a stub
  */
 export default async function snippetToStub() {
-  // ask the for language
+  // ask the user for language
   const quickPick = vscode.window.createQuickPick();
   const languages = await vscode.languages.getLanguages();
   quickPick.items = languages.map(label => ({ label }));
   quickPick.onDidHide(() => quickPick.dispose());
 
   quickPick.onDidAccept(() => {
+    let targetSnippetsText, parsedSnippets: SnippetFileObject;
     const language = quickPick.value;
     const pathToSnippets = `${snippetFolder()}${language}.json`;
 
     // open language snippet file
-    const targetSnippetsText = fs.readFileSync(pathToSnippets, {
-      encoding: "utf8"
-    });
+    try {
+      targetSnippetsText = fs.readFileSync(pathToSnippets, {
+        encoding: "utf8"
+      });
 
-    // parse snippet file as json object
-    const parsedSnippets = JSON.parse(targetSnippetsText);
+      // parse snippet file as json object
+      parsedSnippets = JSON.parse(targetSnippetsText);
+    } catch (error) {
+      vscode.window.showErrorMessage(
+        `There are no snippets available for ${language}`
+      );
+      return;
+    }
 
     // provide the user with a list of snippets from the language snippet file
     const snippetPick = vscode.window.createQuickPick();
@@ -36,7 +45,6 @@ export default async function snippetToStub() {
     snippetPick.onDidChangeSelection(async selection => {
       const key = selection[0].label.split(":")[1].trim();
       const targetSnippet = parsedSnippets[key];
-      console.log("key", key);
 
       // convert that snippet to a snippet stub
       const stub = stubString(key, targetSnippet.prefix, targetSnippet.body);
