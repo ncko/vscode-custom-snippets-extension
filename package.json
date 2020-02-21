@@ -2,7 +2,7 @@
 	"name": "custom-snippets",
 	"displayName": "Custom Snippets",
 	"description": "Easily create, edit and delete custom snippets",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.42.0"
 	},
