@@ -2,9 +2,21 @@ import * as fs from "fs";
 import * as os from "os";
 import { SnippetObject } from "./types";
 
-// TODO - make sure this path is correct for Mac, Linux and Windows
-export const snippetFolder = () =>
-  `${os.homedir()}/Library/Application Support/Code/User/snippets/`;
+const isWin = process.platform === "win32";
+const isMac = process.platform === "darwin";
+
+export const snippetFolder = () => {
+  if (isMac) {
+    return `${os.homedir()}/Library/Application Support/Code/User/snippets/`;
+  }
+
+  if (isWin) {
+    return `${os.homedir()}\Code\User\snippets`;
+  }
+
+  // assume we are on some kind of Unix system
+  return `${os.homedir()}/.config/Code/User/snippets/`;
+};
 
 export const stubString = (
   title?: string,
